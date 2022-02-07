@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class UserController {
     private UserMapper userMapper;
 
     @GetMapping("/{userId}")
-    public UserDto get(@PathVariable UUID id){
+    public UserDto get(@PathVariable(name="userId") UUID id){
         return Optional.of(id)
                 .map(userService::get)
                 .map(userMapper::toDto)
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto post(UserCreateDto userJson){
+    public UserDto post(@Valid @RequestBody UserCreateDto userJson){
         return Optional.ofNullable(userJson)
                 .map(userMapper::fromCreateDto)
                 .map(userService::create)
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public UserDto patch(@PathVariable UUID id, UserUpdateDto userJson){
+    public UserDto patch(@PathVariable(name="userId") UUID id, @Valid @RequestBody UserUpdateDto userJson){
         return Optional.ofNullable(userJson)
                 .map(userMapper::fromUpdateDto)
                 .map(toUpdate->userService.update(id, toUpdate))
@@ -50,7 +51,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable(name="userId") UUID id){
         userService.delete(id);
     }
 }

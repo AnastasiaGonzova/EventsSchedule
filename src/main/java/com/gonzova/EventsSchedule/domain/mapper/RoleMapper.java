@@ -11,16 +11,16 @@ import org.mapstruct.MappingTarget;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface RoleMapper {
 
     @Mapping(target = "user.id", ignore = true)
-    Role fromCreateDto(RoleCreateDto userDto);
+    Role fromCreateDto(RoleCreateDto roleDto);
 
     @Mapping(target = "user.id", ignore = true)
-    Role fromUpdateDto(RoleUpdateDto userDto);
+    Role fromUpdateDto(RoleUpdateDto roleDto);
 
-    RoleDto toDto (Role user);
+    RoleDto toDto (Role role);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Role merge(@MappingTarget Role target, Role source);

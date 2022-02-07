@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     @Mapping(target = "user.id", ignore = true)
@@ -20,6 +20,7 @@ public interface UserMapper {
     @Mapping(target = "user.id", ignore = true)
     User fromUpdateDto(UserUpdateDto userDto);
 
+    @Mapping(target = "user.id", ignore = true)
     UserDto toDto (User user);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)

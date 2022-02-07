@@ -12,13 +12,13 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "room")
-public class Room {
+public class Room extends BaseEntity{
 
     private String roomName;
     private Integer placeNumber;
-    private boolean coffeeMachine;
-    private boolean smartBoard;
-    private boolean projector;
+    private Boolean coffeeMachine;
+    private Boolean smartBoard;
+    private Boolean projector;
 
     @ManyToOne
     @JoinColumn(name = "office_id")

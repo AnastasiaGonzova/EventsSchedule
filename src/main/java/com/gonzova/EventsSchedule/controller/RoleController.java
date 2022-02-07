@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,8 +24,8 @@ public class RoleController {
     @NonNull
     private RoleMapper roleMapper;
 
-    @GetMapping("/{userId}")
-    public RoleDto get(@PathVariable UUID id){
+    @GetMapping("/{roleId}")
+    public RoleDto get(@PathVariable(name="roleId") UUID id){
         return Optional.of(id)
                 .map(roleService::get)
                 .map(roleMapper::toDto)
@@ -32,7 +33,7 @@ public class RoleController {
     }
 
     @PostMapping
-    public RoleDto post(RoleCreateDto roleJson){
+    public RoleDto post(@Valid @RequestBody RoleCreateDto roleJson){
         return Optional.ofNullable(roleJson)
                 .map(roleMapper::fromCreateDto)
                 .map(roleService::create)
@@ -41,7 +42,7 @@ public class RoleController {
     }
 
     @PatchMapping("/{roleId}")
-    public RoleDto patch(@PathVariable UUID id, RoleUpdateDto roleJson){
+    public RoleDto patch(@PathVariable(name="roleId") UUID id, @Valid @RequestBody RoleUpdateDto roleJson){
         return Optional.ofNullable(roleJson)
                 .map(roleMapper::fromUpdateDto)
                 .map(toUpdate-> roleService.update(id, toUpdate))
@@ -50,7 +51,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{roleId}")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable(name="roleId") UUID id){
         roleService.delete(id);
     }
 }

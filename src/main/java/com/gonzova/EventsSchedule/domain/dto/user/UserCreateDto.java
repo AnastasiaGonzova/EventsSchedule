@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @Value
@@ -13,10 +16,21 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class UserCreateDto {
 
+    @NotBlank
     String firstName;
+
+    @NotBlank
     String secondName;
+
+    @NotBlank
     String lastName;
+
+    @NotBlank
     String position;
+
+    @NotBlank
     String department;
+
+    @Email
     String email;
 }

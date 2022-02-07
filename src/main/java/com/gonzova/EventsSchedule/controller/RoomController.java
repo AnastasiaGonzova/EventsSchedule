@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class RoomController {
     private RoomMapper roomMapper;
 
     @GetMapping("/{roomId}")
-    public RoomDto get(@PathVariable UUID id){
+    public RoomDto get(@PathVariable(name="roomId") UUID id){
         return Optional.of(id)
                 .map(roomService::get)
                 .map(roomMapper::toDto)
@@ -32,7 +33,7 @@ public class RoomController {
     }
 
     @PostMapping
-    public RoomDto post(RoomCreateDto roomJson){
+    public RoomDto post(@Valid @RequestBody RoomCreateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromCreateDto)
                 .map(roomService::create)
@@ -40,8 +41,8 @@ public class RoomController {
                 .orElseThrow();
     }
 
-    @PatchMapping("/{userId}")
-    public RoomDto patch(@PathVariable UUID id, RoomUpdateDto roomJson){
+    @PatchMapping("/{roomId}")
+    public RoomDto patch(@PathVariable(name="roomId") UUID id, @Valid @RequestBody RoomUpdateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromUpdateDto)
                 .map(toUpdate->roomService.update(id, toUpdate))
@@ -49,8 +50,8 @@ public class RoomController {
                 .orElseThrow();
     }
 
-    @DeleteMapping("/{userId}")
-    public void delete(@PathVariable UUID id){
+    @DeleteMapping("/{roomId}")
+    public void delete(@PathVariable(name="roomId") UUID id){
         roomService.delete(id);
     }
 }

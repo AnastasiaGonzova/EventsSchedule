@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class OfficeController {
     private OfficeMapper officeMapper;
 
     @GetMapping("/{officeId}")
-    public OfficeDto get(@PathVariable UUID id){
+    public OfficeDto get(@PathVariable(name="officeId") UUID id){
         return Optional.of(id)
                 .map(officeService::get)
                 .map(officeMapper::toDto)
@@ -32,7 +33,7 @@ public class OfficeController {
     }
 
     @PostMapping
-    public OfficeDto post(OfficeCreateDto officeJson){
+    public OfficeDto post(@Valid @RequestBody OfficeCreateDto officeJson){
         return Optional.ofNullable(officeJson)
                 .map(officeMapper::fromCreateDto)
                 .map(officeService::create)
@@ -41,7 +42,7 @@ public class OfficeController {
     }
 
     @PatchMapping("/{officeId}")
-    public OfficeDto patch(@PathVariable UUID id, OfficeUpdateDto officeJson){
+    public OfficeDto patch(@PathVariable(name="officeId") UUID id, @Valid @RequestBody OfficeUpdateDto officeJson){
         return Optional.ofNullable(officeJson)
                 .map(officeMapper::fromUpdateDto)
                 .map(toUpdate->officeService.update(id, toUpdate))
@@ -50,7 +51,7 @@ public class OfficeController {
     }
 
     @DeleteMapping("/{officeId}")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable(name="officeId") UUID id){
         officeService.delete(id);
     }
 }

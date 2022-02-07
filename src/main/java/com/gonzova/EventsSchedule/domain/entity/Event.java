@@ -3,21 +3,20 @@ package com.gonzova.EventsSchedule.domain.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.sql.Date;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
 @Setter
+@Entity
+@Table(name="event")
 public class Event extends BaseEntity{
 
     private String eventName;
     private String eventDescribe;
-    private Date startTime;
-    private Date endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime  endTime;
 
     @ManyToOne
     @JoinColumn(name = "planner_id")

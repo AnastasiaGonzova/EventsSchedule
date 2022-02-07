@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.sql.Date;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -15,8 +18,17 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class EventUpdateDto {
 
+    @NotBlank
     String eventName;
+
+    @NotBlank
     String eventDescribe;
-    Date startTime;
-    Date endTime;
+
+    @Future
+    @NotNull
+    LocalDateTime startTime;
+
+    @Future
+    @NotNull
+    LocalDateTime endTime;
 }

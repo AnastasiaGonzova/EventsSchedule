@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @Value
@@ -13,8 +15,15 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class OfficeCreateDto {
 
+    @NotBlank
     String country;
+
+    @NotBlank
     String city;
+
+    @NotBlank
     String street;
+
+    @NotBlank
     String houseNumber;
 }

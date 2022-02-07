@@ -7,8 +7,10 @@ import com.gonzova.EventsSchedule.domain.mapper.EventMapper;
 import com.gonzova.EventsSchedule.service.EventService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +26,7 @@ public class EventController {
     private EventMapper eventMapper;
 
     @GetMapping("/{eventId}")
-    public EventDto get(@PathVariable UUID id){
+    public EventDto get(@PathVariable(name="eventId") UUID id){
         return Optional.of(id)
                 .map(eventService::get)
                 .map(eventMapper::toDto)
@@ -32,7 +34,7 @@ public class EventController {
     }
 
     @PostMapping
-    public EventDto post(EventCreateDto eventJson){
+    public EventDto post(@Valid @RequestBody EventCreateDto eventJson){
         return Optional.ofNullable(eventJson)
                 .map(eventMapper::fromCreateDto)
                 .map(eventService::create)
@@ -41,7 +43,7 @@ public class EventController {
     }
 
     @PatchMapping("/{eventId}")
-    public EventDto patch(@PathVariable UUID id, EventUpdateDto eventJson){
+    public EventDto patch(@PathVariable(name="eventId") UUID id, @Valid @RequestBody EventUpdateDto eventJson){
         return Optional.ofNullable(eventJson)
                 .map(eventMapper::fromUpdateDto)
                 .map(toUpdate-> eventService.update(id, toUpdate))
@@ -50,7 +52,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{eventId}")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable(name="eventId") UUID id){
         eventService.delete(id);
     }
 }

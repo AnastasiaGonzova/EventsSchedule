@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface OfficeMapper {
 
     @Mapping(target = "office.id", ignore = true)
