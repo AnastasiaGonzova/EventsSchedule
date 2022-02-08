@@ -1,5 +1,6 @@
 package com.gonzova.EventsSchedule.domain.dto.room;
 
+import com.gonzova.EventsSchedule.validation.namedWithDigit.NamedWithDigit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -19,6 +20,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class RoomUpdateDto {
 
     @NotBlank
+    @NamedWithDigit
     String roomName;
 
     @NotNull

@@ -1,6 +1,7 @@
 package com.gonzova.EventsSchedule.domain.dto.room;
 
 import com.gonzova.EventsSchedule.domain.dto.office.OfficeCreateDto;
+import com.gonzova.EventsSchedule.validation.named.Named;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -20,6 +21,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class RoomCreateDto {
 
     @NotBlank
+    @Named
     String roomName;
 
     @NotNull

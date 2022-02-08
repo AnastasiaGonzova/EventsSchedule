@@ -1,5 +1,6 @@
 package com.gonzova.EventsSchedule.domain.dto.event;
 
+import com.gonzova.EventsSchedule.validation.namedWithDigit.NamedWithDigit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -19,9 +20,10 @@ import static lombok.AccessLevel.PRIVATE;
 public class EventUpdateDto {
 
     @NotBlank
+    @NamedWithDigit
     String eventName;
 
-    @NotBlank
+    @NotNull
     String eventDescribe;
 
     @Future

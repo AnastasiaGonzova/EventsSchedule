@@ -1,5 +1,7 @@
 package com.gonzova.EventsSchedule.domain.dto.office;
 
+import com.gonzova.EventsSchedule.validation.named.Named;
+import com.gonzova.EventsSchedule.validation.namedWithDigit.NamedWithDigit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -16,14 +18,18 @@ import static lombok.AccessLevel.PRIVATE;
 public class OfficeCreateDto {
 
     @NotBlank
+    @Named
     String country;
 
     @NotBlank
+    @Named
     String city;
 
     @NotBlank
+    @NamedWithDigit
     String street;
 
     @NotBlank
+    @NamedWithDigit
     String houseNumber;
 }
