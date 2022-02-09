@@ -1,4 +1,4 @@
-package com.gonzova.EventsSchedule.domain.dto.user;
+package com.gonzova.EventsSchedule.domain.dto.employee;
 
 import com.gonzova.EventsSchedule.validation.email.Email;
 import com.gonzova.EventsSchedule.validation.named.Named;
@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-
 import javax.validation.constraints.NotBlank;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -17,7 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @Jacksonized
 @AllArgsConstructor(access = PRIVATE)
-public class UserCreateDto {
+public class EmployeeUpdateDto {
 
     @NotBlank
     @Named

@@ -38,9 +38,9 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     public Office update(UUID id, Office officeJson) {
         return Optional.of(id)
-                .map(this::get)
+                .map(officeRepository::getById)
                 .map(current -> officeMapper.merge(current, officeJson))
-                .map(this::create)
+                .map(officeRepository::saveAndFlush)
                 .orElseThrow();
     }
 

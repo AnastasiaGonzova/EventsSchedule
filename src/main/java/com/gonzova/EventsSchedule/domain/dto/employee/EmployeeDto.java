@@ -1,4 +1,4 @@
-package com.gonzova.EventsSchedule.domain.dto.user;
+package com.gonzova.EventsSchedule.domain.dto.employee;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @Jacksonized
 @AllArgsConstructor(access = PRIVATE)
-public class UserDto {
+public class EmployeeDto {
 
     UUID id;
     String firstName;

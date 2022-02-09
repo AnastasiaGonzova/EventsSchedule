@@ -14,10 +14,10 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
 
-    @Mapping(target = "user.id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Role fromCreateDto(RoleCreateDto roleDto);
 
-    @Mapping(target = "user.id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Role fromUpdateDto(RoleUpdateDto roleDto);
 
     RoleDto toDto (Role role);

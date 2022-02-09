@@ -38,9 +38,9 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room update(UUID id, Room roomJson) {
         return Optional.of(id)
-                .map(this::get)
+                .map(roomRepository::getById)
                 .map(current -> roomMapper.merge(current, roomJson))
-                .map(this::create)
+                .map(roomRepository::saveAndFlush)
                 .orElseThrow();
     }
 

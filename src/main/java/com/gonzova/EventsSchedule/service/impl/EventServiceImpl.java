@@ -39,9 +39,9 @@ public class EventServiceImpl implements EventService {
     @Override
     public Event update(UUID id, Event eventJson) {
         return Optional.of(id)
-                .map(this::get)
+                .map(eventRepository::getById)
                 .map(current -> eventMapper.merge(current, eventJson))
-                .map(this::create)
+                .map(eventRepository::saveAndFlush)
                 .orElseThrow();
     }
 

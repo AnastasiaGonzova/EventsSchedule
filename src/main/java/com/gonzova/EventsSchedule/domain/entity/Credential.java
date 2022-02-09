@@ -17,6 +17,6 @@ public class Credential extends BaseEntity{
     private String pass;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 }

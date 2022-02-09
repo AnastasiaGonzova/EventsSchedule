@@ -14,10 +14,10 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 @Mapper(componentModel = "spring")
 public interface OfficeMapper {
 
-    @Mapping(target = "office.id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Office fromCreateDto(OfficeCreateDto officeDto);
 
-    @Mapping(target = "office.id", ignore = true)
+    @Mapping(target = "id", ignore = true)
     Office fromUpdateDto(OfficeUpdateDto officeDto);
 
     OfficeDto toDto (Office office);

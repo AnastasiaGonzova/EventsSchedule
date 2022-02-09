@@ -20,7 +20,7 @@ public class Event extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "planner_id")
-    private User planner;
+    private Employee planner;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -28,9 +28,9 @@ public class Event extends BaseEntity{
 
     @ManyToMany
     @JoinTable(
-            name = "user_event",
-            joinColumns = { @JoinColumn(name = "user_id") },
+            name = "employee_event",
+            joinColumns = { @JoinColumn(name = "employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "event_id") }
     )
-    private Set<User> guest;
+    private Set<Employee> guest;
 }

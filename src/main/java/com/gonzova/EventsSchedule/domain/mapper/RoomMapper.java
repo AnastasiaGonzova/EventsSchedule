@@ -14,10 +14,12 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 @Mapper(componentModel = "spring")
 public interface RoomMapper {
 
-    @Mapping(target = "room.id", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "office", ignore = true)
     Room fromCreateDto(RoomCreateDto roomDto);
 
-    @Mapping(target = "room.id", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "office", ignore = true)
     Room fromUpdateDto(RoomUpdateDto roomDto);
 
     RoomDto toDto (Room room);

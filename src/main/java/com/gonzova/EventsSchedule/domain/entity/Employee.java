@@ -9,8 +9,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "user")
-public class User extends BaseEntity {
+@Table(name = "employee")
+public class Employee extends BaseEntity {
 
     private String firstName;
     private String secondName;
@@ -21,8 +21,8 @@ public class User extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id") },
+            name = "employee_role",
+            joinColumns = { @JoinColumn(name = "employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
     private Set<Role> roles;

@@ -38,9 +38,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role update(UUID id, Role roleJson) {
         return Optional.of(id)
-                .map(this::get)
+                .map(roleRepository::getById)
                 .map(current -> roleMapper.merge(current, roleJson))
-                .map(this::create)
+                .map(roleRepository::saveAndFlush)
                 .orElseThrow();
     }
 
