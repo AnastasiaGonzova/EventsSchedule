@@ -17,19 +17,15 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class OfficeUpdateDto {
 
-    @NotBlank
     @Named
     String country;
 
-    @NotBlank
     @Named
     String city;
 
-    @NotBlank
     @NamedWithDigit
     String street;
 
-    @NotBlank
     @NamedWithDigit
     String houseNumber;
 }

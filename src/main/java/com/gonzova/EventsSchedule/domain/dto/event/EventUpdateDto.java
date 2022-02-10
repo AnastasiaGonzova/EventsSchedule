@@ -19,18 +19,14 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class EventUpdateDto {
 
-    @NotBlank
     @NamedWithDigit
     String eventName;
 
-    @NotNull
     String eventDescribe;
 
     @Future
-    @NotNull
     LocalDateTime startTime;
 
     @Future
-    @NotNull
     LocalDateTime endTime;
 }

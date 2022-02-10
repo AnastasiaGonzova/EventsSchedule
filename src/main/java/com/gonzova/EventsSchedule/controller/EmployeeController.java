@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path="users")
+@RequestMapping(path="employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 
@@ -24,8 +24,8 @@ public class EmployeeController {
     @NonNull
     private EmployeeMapper employeeMapper;
 
-    @GetMapping("/{userId}")
-    public EmployeeDto get(@PathVariable(name="userId") UUID id){
+    @GetMapping("/{employeeId}")
+    public EmployeeDto get(@PathVariable(name="employeeId") UUID id){
         return Optional.of(id)
                 .map(employeeService::get)
                 .map(employeeMapper::toDto)
@@ -33,25 +33,25 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public EmployeeDto post(@Valid @RequestBody EmployeeCreateDto userJson){
-        return Optional.ofNullable(userJson)
+    public EmployeeDto post(@Valid @RequestBody EmployeeCreateDto employeeJson){
+        return Optional.ofNullable(employeeJson)
                 .map(employeeMapper::fromCreateDto)
                 .map(employeeService::create)
                 .map(employeeMapper::toDto)
                 .orElseThrow();
     }
 
-    @PatchMapping("/{userId}")
-    public EmployeeDto patch(@PathVariable(name="userId") UUID id, @Valid @RequestBody EmployeeUpdateDto userJson){
-        return Optional.ofNullable(userJson)
+    @PatchMapping("/{employeeId}")
+    public EmployeeDto patch(@PathVariable(name="employeeId") UUID id, @Valid @RequestBody EmployeeUpdateDto employeeJson){
+        return Optional.ofNullable(employeeJson)
                 .map(employeeMapper::fromUpdateDto)
                 .map(toUpdate-> employeeService.update(id, toUpdate))
                 .map(employeeMapper::toDto)
                 .orElseThrow();
     }
 
-    @DeleteMapping("/{userId}")
-    public void delete(@PathVariable(name="userId") UUID id){
+    @DeleteMapping("/{employeeId}")
+    public void delete(@PathVariable(name="employeeId") UUID id){
         employeeService.delete(id);
     }
 }

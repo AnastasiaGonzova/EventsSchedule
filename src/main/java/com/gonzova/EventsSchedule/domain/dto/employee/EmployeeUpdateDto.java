@@ -18,23 +18,18 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class EmployeeUpdateDto {
 
-    @NotBlank
     @Named
     String firstName;
 
-    @NotBlank
     @Named
     String secondName;
 
-    @NotBlank
     @Named
     String lastName;
 
-    @NotBlank
     @NamedWithDigit
     String position;
 
-    @NotBlank
     @NamedWithDigit
     String department;
 

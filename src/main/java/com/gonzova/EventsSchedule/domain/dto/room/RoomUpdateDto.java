@@ -19,21 +19,16 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 public class RoomUpdateDto {
 
-    @NotBlank
     @NamedWithDigit
     String roomName;
 
-    @NotNull
     @Min(value = 1)
     @Max(value = 50)
     Integer placeNumber;
 
-    @NotNull
     Boolean coffeeMachine;
 
-    @NotNull
     Boolean smartBoard;
 
-    @NotNull
     Boolean projector;
 }
