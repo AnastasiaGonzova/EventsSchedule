@@ -58,7 +58,7 @@ public class EventController {
         eventService.delete(employeeId, eventId);
     }
 
-    @PostMapping("/events/{eventId}/room/{roomId}")
+    @PostMapping("/events/{eventId}/rooms/{roomId}")
     public EventDto assignRoom(@PathVariable(name="eventId") UUID eventId, @PathVariable(name="roomId") UUID roomId){
         return Optional.of(eventId)
                 .map(eventService::get)

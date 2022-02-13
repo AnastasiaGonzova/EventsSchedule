@@ -30,12 +30,13 @@ public class EventCreateDto {
     String eventDescribe;
 
 
+    @Future
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     LocalDateTime startTime;
 
-
+    @Future
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
