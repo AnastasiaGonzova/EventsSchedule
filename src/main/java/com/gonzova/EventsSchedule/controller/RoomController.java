@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path="rooms")
+@RequestMapping
 @RequiredArgsConstructor
 public class RoomController {
 
@@ -24,7 +24,7 @@ public class RoomController {
     @NonNull
     private RoomMapper roomMapper;
 
-    @GetMapping("/{roomId}")
+    @GetMapping("/rooms/{roomId}")
     public RoomDto get(@PathVariable(name="roomId") UUID id){
         return Optional.of(id)
                 .map(roomService::get)
@@ -32,26 +32,26 @@ public class RoomController {
                 .orElseThrow();
     }
 
-    @PostMapping
-    public RoomDto post(@Valid @RequestBody RoomCreateDto roomJson){
+    @PostMapping("/offices/{officeId}/rooms")
+    public RoomDto post(@PathVariable(name="officeId") UUID officeId, @Valid @RequestBody RoomCreateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromCreateDto)
-                .map(roomService::create)
+                .map(toCreate->roomService.create(officeId, toCreate))
                 .map(roomMapper::toDto)
                 .orElseThrow();
     }
 
-    @PatchMapping("/{roomId}")
-    public RoomDto patch(@PathVariable(name="roomId") UUID id, @Valid @RequestBody RoomUpdateDto roomJson){
+    @PatchMapping("/rooms/{roomId}")
+    public RoomDto patch(@PathVariable(name="roomId") UUID roomId, @Valid @RequestBody RoomUpdateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromUpdateDto)
-                .map(toUpdate->roomService.update(id, toUpdate))
+                .map(toUpdate->roomService.update(roomId, toUpdate))
                 .map(roomMapper::toDto)
                 .orElseThrow();
     }
 
-    @DeleteMapping("/{roomId}")
-    public void delete(@PathVariable(name="roomId") UUID id){
-        roomService.delete(id);
+    @DeleteMapping("/offices/{officeId}/rooms/{roomId}")
+    public void delete(@PathVariable(name="officeId") UUID officeId, @PathVariable(name="roomId") UUID roomId){
+        roomService.delete(officeId, roomId);
     }
 }

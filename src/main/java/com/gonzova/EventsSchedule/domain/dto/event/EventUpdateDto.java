@@ -7,8 +7,6 @@ import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;

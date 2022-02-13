@@ -5,7 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
 @Setter
@@ -26,6 +29,7 @@ public class Event extends BaseEntity{
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @Setter(PRIVATE)
     @ManyToMany
     @JoinTable(
             name = "employee_event",
@@ -33,4 +37,5 @@ public class Event extends BaseEntity{
             inverseJoinColumns = { @JoinColumn(name = "event_id") }
     )
     private Set<Employee> guest;
+
 }

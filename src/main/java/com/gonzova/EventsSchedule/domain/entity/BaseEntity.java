@@ -2,6 +2,7 @@ package com.gonzova.EventsSchedule.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 
 import javax.persistence.GeneratedValue;
@@ -22,8 +23,8 @@ public abstract class BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BaseEntity that = (BaseEntity) o;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        final BaseEntity that = (BaseEntity) o;
         return id.equals(that.id);
     }
 

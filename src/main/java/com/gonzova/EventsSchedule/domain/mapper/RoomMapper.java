@@ -22,6 +22,7 @@ public interface RoomMapper {
     @Mapping(target = "office", ignore = true)
     Room fromUpdateDto(RoomUpdateDto roomDto);
 
+    @Mapping(target = "officeId", source = "office.id")
     RoomDto toDto (Room room);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)

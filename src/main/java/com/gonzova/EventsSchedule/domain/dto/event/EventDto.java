@@ -21,4 +21,7 @@ public class EventDto {
     String eventDescribe;
     LocalDateTime startTime;
     LocalDateTime endTime;
+
+    UUID roomId;
+    UUID plannerId;
 }

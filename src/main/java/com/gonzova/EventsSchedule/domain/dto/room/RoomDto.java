@@ -22,4 +22,6 @@ public class RoomDto {
     boolean smartBoard;
     boolean projector;
 
+    UUID officeId;
+
 }

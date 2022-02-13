@@ -1,6 +1,5 @@
 package com.gonzova.EventsSchedule.domain.dto.role;
 
-
 import com.gonzova.EventsSchedule.domain.entity.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

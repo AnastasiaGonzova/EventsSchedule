@@ -13,21 +13,19 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 public interface EventMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "startTime", ignore = true)
-    @Mapping(target = "endTime", ignore = true)
     @Mapping(target = "planner", ignore = true)
     @Mapping(target = "room", ignore = true)
     @Mapping(target = "guest", ignore = true)
     Event fromCreateDto(EventCreateDto eventDto);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "startTime", ignore = true)
-    @Mapping(target = "endTime", ignore = true)
     @Mapping(target = "planner", ignore = true)
     @Mapping(target = "room", ignore = true)
     @Mapping(target = "guest", ignore = true)
     Event fromUpdateDto(EventUpdateDto eventDto);
 
+    @Mapping(target = "roomId", source = "room.id")
+    @Mapping(target = "plannerId", source = "planner.id")
     EventDto toDto (Event event);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)

@@ -8,9 +8,9 @@ public interface RoomService {
 
     Room get(UUID id);
 
-    Room create(Room roomJson);
+    Room create(UUID officeId, Room roomJson);
 
-    Room update(UUID id, Room roomJson);
+    Room update(UUID roomId, Room roomJson);
 
-    void delete(UUID id);
+    void delete(UUID officeId, UUID roomId);
 }
