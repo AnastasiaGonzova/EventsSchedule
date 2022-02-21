@@ -6,7 +6,6 @@ import com.gonzova.EventsSchedule.repository.RoleRepository;
 import com.gonzova.EventsSchedule.service.RoleService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Primary
 @Transactional
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {

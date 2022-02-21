@@ -8,6 +8,8 @@ public interface RoomService {
 
     Room get(UUID id);
 
+    Room getAndInitialize(UUID id);
+
     Room create(UUID officeId, Room roomJson);
 
     Room update(UUID roomId, Room roomJson);

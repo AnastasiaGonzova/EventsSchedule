@@ -9,7 +9,6 @@ import com.gonzova.EventsSchedule.service.RoomService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Primary
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
@@ -33,6 +31,11 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room get(UUID id) {
+        return roomRepository.getById(id);
+    }
+
+    @Override
+    public Room getAndInitialize(UUID id) {
         Room room = roomRepository.getById(id);
         Hibernate.initialize(room);
         Hibernate.initialize(room.getOffice());

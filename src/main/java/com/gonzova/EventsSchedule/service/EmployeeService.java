@@ -8,6 +8,8 @@ public interface EmployeeService {
 
     Employee get(UUID id);
 
+    Employee getAndInitialize(UUID id);
+
     Employee create(Employee employeeJson);
 
     Employee update(UUID id, Employee employeeJson);

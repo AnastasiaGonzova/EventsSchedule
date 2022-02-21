@@ -1,10 +1,11 @@
-package com.gonzova.EventsSchedule.domain.dto.role;
+package com.gonzova.EventsSchedule.domain.dto;
 
-import com.gonzova.EventsSchedule.domain.emuns.RoleName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
+
+import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -12,6 +13,10 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @Jacksonized
 @AllArgsConstructor(access = PRIVATE)
-public class RoleCreateDto {
-    RoleName name;
+public class EmployeeEventDto {
+
+    UUID employeeId;
+    UUID eventId;
+    UUID invitationKey;
+    Boolean presence;
 }

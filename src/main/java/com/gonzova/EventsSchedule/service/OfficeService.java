@@ -8,6 +8,8 @@ public interface OfficeService {
 
     Office get(UUID id);
 
+    Office getAndInitialize(UUID id);
+
     Office create(Office officeJson);
 
     Office update(UUID id, Office officeJson);

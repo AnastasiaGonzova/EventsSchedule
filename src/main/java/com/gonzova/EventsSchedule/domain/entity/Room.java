@@ -35,5 +35,6 @@ public class Room extends BaseEntity{
 
     public void removeEvent(Event event){
         this.events.remove(event);
+        event.setRoom(null);
     }
 }

@@ -1,4 +1,4 @@
-package com.gonzova.EventsSchedule.domain.entity;
+package com.gonzova.EventsSchedule.domain.emuns;
 
 public enum RoleName {
 

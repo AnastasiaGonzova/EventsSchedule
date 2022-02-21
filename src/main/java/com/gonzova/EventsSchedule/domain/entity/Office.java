@@ -32,5 +32,6 @@ public class Office extends BaseEntity{
 
     public void removeRoom(Room room){
         this.rooms.remove(room);
+        room.setOffice(null);
     }
 }

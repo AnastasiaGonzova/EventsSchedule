@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,6 +20,9 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue
     private UUID id;
+
+    //@Version
+    //private Integer version;
 
     @Override
     public boolean equals(Object o) {

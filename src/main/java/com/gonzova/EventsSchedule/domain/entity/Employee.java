@@ -1,5 +1,6 @@
 package com.gonzova.EventsSchedule.domain.entity;
 
+import com.gonzova.EventsSchedule.domain.entity.employeeEvent.EmployeeEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,29 +32,20 @@ public class Employee extends BaseEntity {
     private Set<Role> roles;
 
     @Setter(PRIVATE)
-    @ManyToMany(mappedBy = "guest")
-    private Set<Event> asGuest;
+    @OneToMany(mappedBy = "employee")
+    private Set<EmployeeEvent> guestEvent;
 
     @Setter(PRIVATE)
     @OneToMany(mappedBy = "planner")
-    private Set<Event> asPlanner;
+    private Set<Event> plannerEvent;
 
     public void addEventAsPlanner(Event event){
-        this.asPlanner.add(event);
+        this.plannerEvent.add(event);
         event.setPlanner(this);
     }
 
-    public void removeEventAsPlanner(Event event){
-        this.asPlanner.remove(event);
-    }
-
-    public void addEventAsGuest(Event event){
-        this.asGuest.add(event);
-        event.getGuest().add(this);
-    }
-
-    public void removeEventAsGuest(Event event){
-        this.asGuest.remove(event);
-        event.getGuest().remove(this);
+    public void removeEventAsPlanner(Event event) {
+        this.plannerEvent.remove(event);
+        event.setPlanner(null);
     }
 }

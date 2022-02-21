@@ -1,10 +1,10 @@
 package com.gonzova.EventsSchedule.domain.entity;
 
+import com.gonzova.EventsSchedule.domain.emuns.RoleName;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter

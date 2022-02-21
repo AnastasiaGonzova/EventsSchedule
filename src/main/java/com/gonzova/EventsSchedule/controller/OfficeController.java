@@ -27,13 +27,13 @@ public class OfficeController {
     @GetMapping("/{officeId}")
     public OfficeDto get(@PathVariable(name="officeId") UUID id){
         return Optional.of(id)
-                .map(officeService::get)
+                .map(officeService::getAndInitialize)
                 .map(officeMapper::toDto)
                 .orElseThrow();
     }
 
     @PostMapping
-    public OfficeDto post(@Valid @RequestBody OfficeCreateDto officeJson){
+    public OfficeDto create(@Valid @RequestBody OfficeCreateDto officeJson){
         return Optional.ofNullable(officeJson)
                 .map(officeMapper::fromCreateDto)
                 .map(officeService::create)
@@ -42,7 +42,7 @@ public class OfficeController {
     }
 
     @PatchMapping("/{officeId}")
-    public OfficeDto patch(@PathVariable(name="officeId") UUID id, @Valid @RequestBody OfficeUpdateDto officeJson){
+    public OfficeDto update(@PathVariable(name="officeId") UUID id, @Valid @RequestBody OfficeUpdateDto officeJson){
         return Optional.ofNullable(officeJson)
                 .map(officeMapper::fromUpdateDto)
                 .map(toUpdate->officeService.update(id, toUpdate))

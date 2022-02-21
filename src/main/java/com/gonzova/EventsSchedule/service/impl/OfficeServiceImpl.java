@@ -7,7 +7,6 @@ import com.gonzova.EventsSchedule.service.OfficeService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Primary
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class OfficeServiceImpl implements OfficeService {
 
@@ -28,6 +26,11 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public Office get(UUID id) {
+        return officeRepository.getById(id);
+    }
+
+    @Override
+    public Office getAndInitialize(UUID id) {
         Office office = officeRepository.getById(id);
         Hibernate.initialize(office);
         Hibernate.initialize(office.getRooms());

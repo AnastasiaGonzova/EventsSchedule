@@ -1,11 +1,12 @@
 package com.gonzova.EventsSchedule.domain.entity;
 
+import com.gonzova.EventsSchedule.domain.entity.employeeEvent.EmployeeEvent;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -18,8 +19,9 @@ public class Event extends BaseEntity{
 
     private String eventName;
     private String eventDescribe;
-    private LocalDateTime startTime;
-    private LocalDateTime  endTime;
+    private LocalDate eventDate;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     @ManyToOne
     @JoinColumn(name = "planner_id")
@@ -30,12 +32,7 @@ public class Event extends BaseEntity{
     private Room room;
 
     @Setter(PRIVATE)
-    @ManyToMany
-    @JoinTable(
-            name = "employee_event",
-            joinColumns = { @JoinColumn(name = "employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "event_id") }
-    )
-    private Set<Employee> guest;
+    @OneToMany(mappedBy = "event")
+    private Set<EmployeeEvent> guests;
 
 }

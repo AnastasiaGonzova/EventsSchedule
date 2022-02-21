@@ -11,15 +11,14 @@ import com.gonzova.EventsSchedule.service.RoomService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Primary
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
@@ -37,15 +36,20 @@ public class EventServiceImpl implements EventService {
     private RoomService roomService;
 
     @Override
-    public Event get(UUID id) {
+    public Event getAndInitialize(UUID id) {
         Event event = eventRepository.getById(id);
         Hibernate.initialize(event);
-        Hibernate.initialize(event.getGuest());
+        Hibernate.initialize(event.getGuests());
         Hibernate.initialize(event.getPlanner());
         Hibernate.initialize(event.getRoom());
         Hibernate.initialize(event.getStartTime());
         Hibernate.initialize(event.getEndTime());
         return event;
+    }
+
+    @Override
+    public Event get(UUID id) {
+        return eventRepository.getById(id);
     }
 
     @Override
@@ -76,33 +80,31 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public Event assignRoom(UUID roomId, Event event) {
+    public Event assignRoom(UUID roomId, UUID eventId) {
         final Room room = roomService.get(roomId);
+        final Event event = eventRepository.getById(eventId);
+        Collection<Event> events = eventRepository.findEventByIdAndDate(roomId, event.getEventDate());
+
+            for(Event e : events){
+                if(event.getStartTime().compareTo(e.getStartTime()) == 1 && event.getEndTime().compareTo(e.getEndTime()) == -1)
+                    throw new IllegalArgumentException();
+                if(event.getStartTime().compareTo(e.getStartTime()) == 0 && event.getEndTime().compareTo(e.getEndTime()) == 0)
+                    throw new IllegalArgumentException();
+                if(event.getStartTime().compareTo(e.getStartTime()) == -1 && event.getEndTime().compareTo(e.getStartTime()) == 1)
+                    throw new IllegalArgumentException();
+                if(event.getStartTime().compareTo(e.getStartTime()) == 1 && event.getEndTime().compareTo(e.getEndTime()) == 1)
+                    throw new IllegalArgumentException();
+            }
         room.addEvent(event);
         return eventRepository.saveAndFlush(event);
     }
 
     @Override
     @Transactional
-    public Event assignGuest(UUID employeeId, Event event) {
-        final Employee employee = employeeService.get(employeeId);
-        employee.addEventAsGuest(event);
-        return eventRepository.saveAndFlush(event);
-    }
-
-    @Override
-    @Transactional
-    public Event removeRoom(UUID roomId, Event event) {
+    public Event removeRoom(UUID roomId, UUID eventId) {
         final Room room = roomService.get(roomId);
+        final Event event = eventRepository.getById(eventId);
         room.removeEvent(event);
-        return eventRepository.saveAndFlush(event);
-    }
-
-    @Override
-    @Transactional
-    public Event removeGuest(UUID employeeId, Event event) {
-        final Employee employee = employeeService.get(employeeId);
-        employee.removeEventAsGuest(event);
         return eventRepository.saveAndFlush(event);
     }
 }

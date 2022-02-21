@@ -27,13 +27,13 @@ public class RoomController {
     @GetMapping("/rooms/{roomId}")
     public RoomDto get(@PathVariable(name="roomId") UUID id){
         return Optional.of(id)
-                .map(roomService::get)
+                .map(roomService::getAndInitialize)
                 .map(roomMapper::toDto)
                 .orElseThrow();
     }
 
     @PostMapping("/offices/{officeId}/rooms")
-    public RoomDto post(@PathVariable(name="officeId") UUID officeId, @Valid @RequestBody RoomCreateDto roomJson){
+    public RoomDto create(@PathVariable(name="officeId") UUID officeId, @Valid @RequestBody RoomCreateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromCreateDto)
                 .map(toCreate->roomService.create(officeId, toCreate))
@@ -42,7 +42,7 @@ public class RoomController {
     }
 
     @PatchMapping("/rooms/{roomId}")
-    public RoomDto patch(@PathVariable(name="roomId") UUID roomId, @Valid @RequestBody RoomUpdateDto roomJson){
+    public RoomDto update(@PathVariable(name="roomId") UUID roomId, @Valid @RequestBody RoomUpdateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromUpdateDto)
                 .map(toUpdate->roomService.update(roomId, toUpdate))

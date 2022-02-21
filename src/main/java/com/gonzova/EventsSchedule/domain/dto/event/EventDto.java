@@ -5,7 +5,8 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -19,8 +20,9 @@ public class EventDto {
     UUID id;
     String eventName;
     String eventDescribe;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
+    LocalDate eventDate;
+    LocalTime startTime;
+    LocalTime endTime;
 
     UUID roomId;
     UUID plannerId;

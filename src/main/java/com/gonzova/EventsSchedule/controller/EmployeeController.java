@@ -27,13 +27,13 @@ public class EmployeeController {
     @GetMapping("/{employeeId}")
     public EmployeeDto get(@PathVariable(name="employeeId") UUID id){
         return Optional.of(id)
-                .map(employeeService::get)
+                .map(employeeService::getAndInitialize)
                 .map(employeeMapper::toDto)
                 .orElseThrow();
     }
 
     @PostMapping
-    public EmployeeDto post(@Valid @RequestBody EmployeeCreateDto employeeJson){
+    public EmployeeDto create(@Valid @RequestBody EmployeeCreateDto employeeJson){
         return Optional.ofNullable(employeeJson)
                 .map(employeeMapper::fromCreateDto)
                 .map(employeeService::create)
@@ -42,7 +42,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/{employeeId}")
-    public EmployeeDto patch(@PathVariable(name="employeeId") UUID id, @Valid @RequestBody EmployeeUpdateDto employeeJson){
+    public EmployeeDto update(@PathVariable(name="employeeId") UUID id, @Valid @RequestBody EmployeeUpdateDto employeeJson){
         return Optional.ofNullable(employeeJson)
                 .map(employeeMapper::fromUpdateDto)
                 .map(toUpdate-> employeeService.update(id, toUpdate))
