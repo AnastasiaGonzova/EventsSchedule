@@ -5,6 +5,7 @@ import com.gonzova.EventsSchedule.domain.mapper.EmployeeEventMapper;
 import com.gonzova.EventsSchedule.service.EmployeeEventService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class MailController {
     }
 
     @GetMapping("/invite/{invitationCode}")
+    @PreAuthorize("hasAuthority('USER')")
     public EmployeeEventDto invitation(@PathVariable(name="invitationCode") UUID invitationCode){
         return Optional.of(employeeEventService.confirmPresence(invitationCode))
                 .map(employeeEventMapper::toDto)

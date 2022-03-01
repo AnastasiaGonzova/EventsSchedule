@@ -1,8 +1,14 @@
 package com.gonzova.EventsSchedule.domain.emuns;
 
-public enum RoleName {
+import org.springframework.security.core.GrantedAuthority;
 
-    ADMIN,
-    HR,
-    USER;
+public enum RoleName implements GrantedAuthority {
+
+    ADMIN, HR, USER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
+
 }

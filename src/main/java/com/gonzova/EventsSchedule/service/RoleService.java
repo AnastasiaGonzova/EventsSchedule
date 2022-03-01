@@ -1,16 +1,16 @@
 package com.gonzova.EventsSchedule.service;
 
+import com.gonzova.EventsSchedule.domain.dto.RoleDto;
 import com.gonzova.EventsSchedule.domain.entity.Role;
 
 import java.util.UUID;
 
 public interface RoleService {
-
     Role get(UUID id);
 
-    Role create(Role roleJson);
+    Role getAndInitialize(UUID id);
 
-    Role update(UUID id, Role roleJson);
+    void delete(UUID roleId);
 
-    void delete(UUID id);
+    RoleDto toDto(Role role);
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -22,6 +23,9 @@ public class Employee extends BaseEntity {
     private String department;
     private String email;
 
+    private Boolean activated;
+    private UUID activationKey;
+
     @Setter(PRIVATE)
     @ManyToMany
     @JoinTable(
@@ -30,6 +34,9 @@ public class Employee extends BaseEntity {
             inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
     private Set<Role> roles;
+
+    @OneToOne(mappedBy = "employee")
+    private Credential credential;
 
     @Setter(PRIVATE)
     @OneToMany(mappedBy = "employee")
@@ -47,5 +54,15 @@ public class Employee extends BaseEntity {
     public void removeEventAsPlanner(Event event) {
         this.plannerEvent.remove(event);
         event.setPlanner(null);
+    }
+
+    public void addRole(Role role){
+        this.roles.add(role);
+        role.getEmployees().add(this);
+    }
+
+    public void removeRole(Role role){
+        this.roles.remove(role);
+        role.getEmployees().remove(this);
     }
 }
