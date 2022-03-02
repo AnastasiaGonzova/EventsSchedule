@@ -23,13 +23,8 @@ public class MailController {
     @NonNull
     private EmployeeEventMapper employeeEventMapper;
 
-    @GetMapping("/activate/{activationCode}")
-    public void activationEmail(){
-
-    }
-
     @GetMapping("/invite/{invitationCode}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public EmployeeEventDto invitation(@PathVariable(name="invitationCode") UUID invitationCode){
         return Optional.of(employeeEventService.confirmPresence(invitationCode))
                 .map(employeeEventMapper::toDto)

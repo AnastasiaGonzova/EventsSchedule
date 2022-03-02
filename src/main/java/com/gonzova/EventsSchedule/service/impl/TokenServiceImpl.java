@@ -24,7 +24,7 @@ public class TokenServiceImpl implements TokenService {
                 .setSubject(employee.getCredential().getLogin())
                 .setIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
                 .setExpiration(Date.from(LocalDateTime.now().plusHours(8).atZone(ZoneId.systemDefault()).toInstant()))
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 

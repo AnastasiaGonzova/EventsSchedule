@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -23,11 +23,8 @@ public class Employee extends BaseEntity {
     private String department;
     private String email;
 
-    private Boolean activated;
-    private UUID activationKey;
-
     @Setter(PRIVATE)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "employee_role",
             joinColumns = { @JoinColumn(name = "employee_id") },
@@ -57,6 +54,9 @@ public class Employee extends BaseEntity {
     }
 
     public void addRole(Role role){
+        if(roles == null){
+            roles = new HashSet<>();
+        }
         this.roles.add(role);
         role.getEmployees().add(this);
     }

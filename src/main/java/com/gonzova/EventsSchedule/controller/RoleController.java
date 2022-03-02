@@ -19,7 +19,7 @@ public class RoleController {
     private RoleService roleService;
 
     @GetMapping("/{roleId}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public RoleDto get(@PathVariable(name="roleId") UUID id){
         return Optional.of(id)
                 .map(roleService::getAndInitialize)
@@ -28,7 +28,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{roleId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@PathVariable(name="roleId") UUID id){
         roleService.delete(id);
     }

@@ -32,7 +32,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-up")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'HR')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_HR')")
     public String signUp(@Valid @RequestBody EmployeeCreateDto employeeJson){
        return Optional.ofNullable(employeeJson)
                 .map(employeeMapper::fromCreateDto)

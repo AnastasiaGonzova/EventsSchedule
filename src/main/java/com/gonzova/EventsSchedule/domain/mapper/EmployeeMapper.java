@@ -29,6 +29,9 @@ public interface EmployeeMapper {
 
     EmployeeDto toDto (Employee employee);
 
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "plannerEvent", ignore = true)
+    @Mapping(target = "guestEvent", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Employee merge(@MappingTarget Employee target, Employee source);
 }

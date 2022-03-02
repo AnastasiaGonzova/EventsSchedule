@@ -1,5 +1,6 @@
 package com.gonzova.EventsSchedule.configuration;
 
+import com.gonzova.EventsSchedule.security.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-   // private final JwtRequestFilter filter;
+    private final JwtRequestFilter filter;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -28,14 +29,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
-        web.ignoring().antMatchers("authentication/login", "/activate/{activationCode}");
+        web.ignoring().antMatchers("/authentication/login", "/authentication/activate/{activationCode}");
     }
 
-  /*  @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.cors().disable()
                 .csrf().disable();
-     //   http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-    }*/
+        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+    }
 }

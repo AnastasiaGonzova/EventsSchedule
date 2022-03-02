@@ -1,6 +1,5 @@
 package com.gonzova.EventsSchedule.domain.entity;
 
-import com.gonzova.EventsSchedule.domain.emuns.RoleName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,8 +14,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Table(name = "role")
 public class Role extends BaseEntity{
 
-    @Enumerated(EnumType.STRING)
-    private RoleName name;
+    private String name;
 
     @Setter(PRIVATE)
     @ManyToMany(mappedBy = "roles")

@@ -1,7 +1,6 @@
 package com.gonzova.EventsSchedule.controller;
 
 import com.gonzova.EventsSchedule.domain.dto.CredentialUpdateDto;
-import com.gonzova.EventsSchedule.domain.dto.employee.EmployeeCreateDto;
 import com.gonzova.EventsSchedule.domain.dto.employee.EmployeeDto;
 import com.gonzova.EventsSchedule.domain.dto.employee.EmployeeUpdateDto;
 import com.gonzova.EventsSchedule.domain.mapper.CredentialMapper;
@@ -35,7 +34,7 @@ public class EmployeeController {
     private CredentialMapper credentialMapper;
 
     @GetMapping("/{employeeId}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public EmployeeDto get(@PathVariable(name="employeeId") UUID id){
         return Optional.of(id)
                 .map(employeeService::getAndInitialize)
@@ -43,18 +42,8 @@ public class EmployeeController {
                 .orElseThrow();
     }
 
-    @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'HR')")
-    public EmployeeDto create(@Valid @RequestBody EmployeeCreateDto employeeJson){
-        return Optional.ofNullable(employeeJson)
-                .map(employeeMapper::fromCreateDto)
-                .map(employeeService::create)
-                .map(employeeMapper::toDto)
-                .orElseThrow();
-    }
-
     @PatchMapping("/{employeeId}")
-    @PreAuthorize("hasAuthority('ADMIN') || hasPermission(#id, 'Employee', 'UPDATE')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasPermission(#id, 'Employee', 'UPDATE')")
     public EmployeeDto update(@PathVariable(name="employeeId") UUID id, @Valid @RequestBody EmployeeUpdateDto employeeJson){
         return Optional.ofNullable(employeeJson)
                 .map(employeeMapper::fromUpdateDto)
@@ -64,17 +53,36 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{employeeId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'HR')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_HR')")
     public void delete(@PathVariable(name="employeeId") UUID id){
         employeeService.delete(id);
     }
 
-    @PatchMapping("/{employeeId}/credential")
+
+    @PatchMapping("/{employeeId}/profile")
     @PreAuthorize("hasPermission(#id, 'Employee', 'UPDATE')")
     public void updateCredential(@PathVariable(name="employeeId") UUID id, @RequestBody CredentialUpdateDto credentialJson){
         Optional.ofNullable(credentialJson)
                 .map(credentialMapper::fromUpdateDto)
                 .map(toUpdate->credentialService.update(id, toUpdate))
+                .orElseThrow();
+    }
+
+    @PostMapping("/{employeeId}/roles/{roleId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_HR')")
+    public EmployeeDto assignRole(@PathVariable(name="employeeId") UUID employeeId, @PathVariable(name="roleId") UUID roleId){
+        return Optional.of(employeeId)
+                .map(current -> employeeService.assignRole(current, roleId))
+                .map(employeeMapper::toDto)
+                .orElseThrow();
+    }
+
+    @DeleteMapping("/{employeeId}/roles/{roleId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_HR')")
+    public EmployeeDto removeRole(@PathVariable(name="employeeId") UUID employeeId, @PathVariable(name="roleId") UUID roleId){
+        return Optional.of(employeeId)
+                .map(current -> employeeService.removeRole(current, roleId))
+                .map(employeeMapper::toDto)
                 .orElseThrow();
     }
 }

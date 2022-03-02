@@ -26,7 +26,7 @@ public class RoomController {
     private RoomMapper roomMapper;
 
     @GetMapping("/rooms/{roomId}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public RoomDto get(@PathVariable(name="roomId") UUID id){
         return Optional.of(id)
                 .map(roomService::getAndInitialize)
@@ -35,7 +35,7 @@ public class RoomController {
     }
 
     @PostMapping("/offices/{officeId}/rooms")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public RoomDto create(@PathVariable(name="officeId") UUID officeId, @Valid @RequestBody RoomCreateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromCreateDto)
@@ -45,7 +45,7 @@ public class RoomController {
     }
 
     @PatchMapping("/rooms/{roomId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public RoomDto update(@PathVariable(name="roomId") UUID roomId, @Valid @RequestBody RoomUpdateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromUpdateDto)
@@ -55,7 +55,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/offices/{officeId}/rooms/{roomId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@PathVariable(name="officeId") UUID officeId, @PathVariable(name="roomId") UUID roomId){
         roomService.delete(officeId, roomId);
     }

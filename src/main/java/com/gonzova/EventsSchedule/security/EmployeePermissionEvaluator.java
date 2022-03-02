@@ -1,6 +1,8 @@
 package com.gonzova.EventsSchedule.security;
 
 import com.gonzova.EventsSchedule.domain.dto.employee.EmployeeDto;
+import com.gonzova.EventsSchedule.domain.entity.Employee;
+import com.gonzova.EventsSchedule.domain.mapper.EmployeeMapper;
 import com.gonzova.EventsSchedule.repository.EventRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +18,17 @@ import java.util.UUID;
 @Component
 @Transactional
 @RequiredArgsConstructor
-public abstract class EmployeePermissionEvaluator implements PermissionEvaluator {
+public class EmployeePermissionEvaluator implements PermissionEvaluator {
 
     @NonNull
     private EventRepository eventRepository;
 
+    @NonNull
+    private EmployeeMapper employeeMapper;
+
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        EmployeeDto employeeDto = (EmployeeDto) authentication.getPrincipal();
+        EmployeeDto employeeDto = employeeMapper.toDto((Employee)authentication.getPrincipal());
         if (Objects.equals(targetType, "Event") && (permission.equals("UPDATE") ||permission.equals("DELETE") || permission.equals("WRITE"))) {
             return eventRepository.existsByPlannerIdAndId((UUID) targetId, employeeDto.getId());
         }
@@ -32,4 +37,11 @@ public abstract class EmployeePermissionEvaluator implements PermissionEvaluator
         }
         return false;
     }
+
+    @Override
+    public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+        EmployeeDto employeeDto = employeeMapper.toDto((Employee)authentication.getPrincipal());
+        return Objects.equals((UUID) targetDomainObject, employeeDto.getId());
+    }
+
 }

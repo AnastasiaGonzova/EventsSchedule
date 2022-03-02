@@ -26,7 +26,7 @@ public class OfficeController {
     private OfficeMapper officeMapper;
 
     @GetMapping("/{officeId}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public OfficeDto get(@PathVariable(name="officeId") UUID id){
         return Optional.of(id)
                 .map(officeService::getAndInitialize)
@@ -35,7 +35,7 @@ public class OfficeController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public OfficeDto create(@Valid @RequestBody OfficeCreateDto officeJson){
         return Optional.ofNullable(officeJson)
                 .map(officeMapper::fromCreateDto)
@@ -45,7 +45,7 @@ public class OfficeController {
     }
 
     @PatchMapping("/{officeId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public OfficeDto update(@PathVariable(name="officeId") UUID id, @Valid @RequestBody OfficeUpdateDto officeJson){
         return Optional.ofNullable(officeJson)
                 .map(officeMapper::fromUpdateDto)
@@ -55,7 +55,7 @@ public class OfficeController {
     }
 
     @DeleteMapping("/{officeId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@PathVariable(name="officeId") UUID id){
         officeService.delete(id);
     }

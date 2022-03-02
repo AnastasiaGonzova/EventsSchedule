@@ -15,13 +15,16 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 public interface OfficeMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "rooms", ignore = true)
     Office fromCreateDto(OfficeCreateDto officeDto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "rooms", ignore = true)
     Office fromUpdateDto(OfficeUpdateDto officeDto);
 
     OfficeDto toDto (Office office);
 
+    @Mapping(target = "rooms", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Office merge(@MappingTarget Office target, Office source);
 }

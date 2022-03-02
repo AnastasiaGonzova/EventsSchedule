@@ -16,15 +16,18 @@ public interface RoomMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "office", ignore = true)
+    @Mapping(target = "events", ignore = true)
     Room fromCreateDto(RoomCreateDto roomDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "office", ignore = true)
+    @Mapping(target = "events", ignore = true)
     Room fromUpdateDto(RoomUpdateDto roomDto);
 
     @Mapping(target = "officeId", source = "office.id")
     RoomDto toDto (Room room);
 
+    @Mapping(target = "events", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Room merge(@MappingTarget Room target, Room source);
 }

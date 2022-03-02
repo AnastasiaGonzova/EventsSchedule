@@ -1,14 +1,14 @@
 package com.gonzova.EventsSchedule.service.impl;
 
 import com.gonzova.EventsSchedule.domain.dto.LoginRequest;
-import com.gonzova.EventsSchedule.domain.emuns.RoleName;
 import com.gonzova.EventsSchedule.domain.entity.Credential;
 import com.gonzova.EventsSchedule.domain.entity.Employee;
 import com.gonzova.EventsSchedule.domain.entity.Role;
 import com.gonzova.EventsSchedule.repository.CredentialRepository;
+import com.gonzova.EventsSchedule.repository.EmployeeRepository;
 import com.gonzova.EventsSchedule.repository.RoleRepository;
 import com.gonzova.EventsSchedule.service.AuthenticationService;
-import com.gonzova.EventsSchedule.service.EmployeeService;
+import com.gonzova.EventsSchedule.service.MailService;
 import com.gonzova.EventsSchedule.service.TokenService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,19 +24,22 @@ import java.util.Random;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     @NonNull
-    private EmployeeService employeeService;
-
-    @NonNull
     private TokenService tokenService;
 
     @NonNull
     private CredentialRepository credentialRepository;
 
     @NonNull
+    private EmployeeRepository employeeRepository;
+
+    @NonNull
     private RoleRepository roleRepository;
 
     @NonNull
     private PasswordEncoder passwordEncoder;
+
+    @NonNull
+    private MailService mailService;
 
     @Override
     public String login(LoginRequest loginRequest) {
@@ -50,6 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public String signUp(Employee employeeJson) {
         Random random = new Random();
         int leftLimit = 48; // numeral '0'
@@ -58,22 +62,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Credential credential = new Credential();
         credential.setEmployee(employeeJson);
-        credential.setLogin(random.ints(leftLimit, rightLimit + 1)
+        String login = random.ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString());
-        credential.setPass(passwordEncoder.encode(random.ints(leftLimit, rightLimit + 1)
+                .toString();
+        String password = random.ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString()));
+                .toString();
+
+        if (!employeeJson.getEmail().isEmpty()) {
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "Welcome to the company! You need to log in to the EventSchedule system. Your login details: \n Login: %s \n Password: %s",
+                    employeeJson.getFirstName(),
+                    login,
+                    password);
+
+            mailService.sendEmail(employeeJson.getEmail(), "Welcome!", message);
+        }
+
+        credential.setLogin(login);
+        credential.setPass(passwordEncoder.encode(password));
+
+
+        Role role = roleRepository.findByName("USER").orElseThrow();
+        employeeJson.addRole(role);
+        employeeRepository.saveAndFlush(employeeJson);
 
         employeeJson.setCredential(credential);
-        RoleName roleName = RoleName.USER;
-        Role role = roleRepository.findByName(roleName).orElseThrow();
-        employeeJson.addRole(role);
-        employeeService.create(employeeJson);
+        credential.setEmployee(employeeJson);
+        credentialRepository.saveAndFlush(credential);
         return tokenService.generateToken(employeeJson);
     }
 }

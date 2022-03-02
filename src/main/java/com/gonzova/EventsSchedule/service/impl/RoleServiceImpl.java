@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleDto toDto(Role role) {
         return RoleDto.builder()
                 .id(role.getId())
-                .roleName(role.getName().name())
+                .roleName(role.getName())
                 .build();
     }
 }

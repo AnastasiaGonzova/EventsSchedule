@@ -23,7 +23,7 @@ public class InviteController {
     private EmployeeEventMapper employeeEventMapper;
 
     @PostMapping("/{eventId}/employees/{employeeId}")
-    @PreAuthorize("hasAuthority('ADMIN') || hasPermission(#eventId, 'Event', 'WRITE')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasPermission(#eventId, 'Event', 'WRITE')")
     public EmployeeEventDto assignGuest(@PathVariable(name="eventId") UUID eventId, @PathVariable(name="employeeId") UUID employeeId){
         return Optional.of(eventId)
                 .map(current->employeeEventService.assignGuest(employeeId, current))
@@ -32,7 +32,7 @@ public class InviteController {
     }
 
     @DeleteMapping("/{eventId}/employees/{employeeId}")
-    @PreAuthorize("hasAuthority('ADMIN') || hasPermission(#eventId, 'Event', 'DELETE')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasPermission(#eventId, 'Event', 'DELETE')")
     public EmployeeEventDto removeGuest(@PathVariable(name="eventId") UUID eventId, @PathVariable(name="employeeId") UUID employeeId){
         return Optional.of(eventId)
                 .map(current->employeeEventService.removeGuest(employeeId, current))
