@@ -30,6 +30,7 @@ public interface EventMapper {
     @Mapping(target = "plannerId", source = "planner.id")
     EventDto toDto (Event event);
 
+    @Mapping(target = "guests", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Event merge(@MappingTarget Event target, Event source);
 }

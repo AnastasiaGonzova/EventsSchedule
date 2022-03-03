@@ -1,8 +1,10 @@
 package com.gonzova.EventsSchedule.service.impl;
 
 import com.gonzova.EventsSchedule.domain.entity.Employee;
+import com.gonzova.EventsSchedule.domain.entity.Role;
 import com.gonzova.EventsSchedule.domain.mapper.EmployeeMapper;
 import com.gonzova.EventsSchedule.repository.EmployeeRepository;
+import com.gonzova.EventsSchedule.repository.RoleRepository;
 import com.gonzova.EventsSchedule.service.EmployeeService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @NonNull
     private EmployeeRepository employeeRepository;
+
+    @NonNull
+    private RoleRepository roleRepository;
 
     @NonNull
     private EmployeeMapper employeeMapper;
@@ -40,12 +45,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public Employee create(Employee employeeJson) {
-        return employeeRepository.saveAndFlush(employeeJson);
-    }
-
-    @Override
-    @Transactional
     public Employee update(UUID id, Employee employeeJson) {
         return Optional.of(id)
                 .map(employeeRepository::getById)
@@ -59,4 +58,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void delete(UUID id) {
         employeeRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional
+    public Employee assignRole(UUID employeeId, UUID roleId) {
+        Employee employee = employeeRepository.getById(employeeId);
+        Role role = roleRepository.getById(roleId);
+        employee.addRole(role);
+        return employeeRepository.saveAndFlush(employee);
+    }
+
+    @Override
+    @Transactional
+    public Employee removeRole(UUID employeeId, UUID roleId) {
+        Employee employee = employeeRepository.getById(employeeId);
+        Role role = roleRepository.getById(roleId);
+        employee.removeRole(role);
+        return employeeRepository.saveAndFlush(employee);
+    }
+
 }

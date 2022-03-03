@@ -15,4 +15,6 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     @Query("SELECT e FROM Event e WHERE e.room.id = :roomId AND e.eventDate = :eventDate")
     Collection<Event> findEventByIdAndDate(@Param("roomId") UUID roomId, @Param("eventDate") LocalDate eventDate);
+
+    boolean existsByPlannerIdAndId(UUID plannerId, UUID id);
 }

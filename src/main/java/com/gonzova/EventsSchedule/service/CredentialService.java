@@ -6,8 +6,6 @@ import java.util.UUID;
 
 public interface CredentialService {
 
-    Credential get(UUID id);
-
     Credential create(Credential credentialJson);
 
     Credential update(UUID id, Credential credentialJson);

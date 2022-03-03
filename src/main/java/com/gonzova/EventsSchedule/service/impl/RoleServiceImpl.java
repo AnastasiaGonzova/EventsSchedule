@@ -1,27 +1,24 @@
 package com.gonzova.EventsSchedule.service.impl;
 
+import com.gonzova.EventsSchedule.domain.dto.RoleDto;
 import com.gonzova.EventsSchedule.domain.entity.Role;
-import com.gonzova.EventsSchedule.domain.mapper.RoleMapper;
 import com.gonzova.EventsSchedule.repository.RoleRepository;
 import com.gonzova.EventsSchedule.service.RoleService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
     @NonNull
     private RoleRepository roleRepository;
-
-    @NonNull
-    private RoleMapper roleMapper;
 
     @Override
     public Role get(UUID id) {
@@ -29,21 +26,23 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role create(Role roleJson) {
-        return roleRepository.saveAndFlush(roleJson);
+    public Role getAndInitialize(UUID id) {
+        Role role = roleRepository.getById(id);
+        Hibernate.initialize(role.getName());
+        Hibernate.initialize(role.getEmployees());
+        return role;
     }
 
     @Override
-    public Role update(UUID id, Role roleJson) {
-        return Optional.of(id)
-                .map(roleRepository::getById)
-                .map(current -> roleMapper.merge(current, roleJson))
-                .map(roleRepository::saveAndFlush)
-                .orElseThrow();
+    public void delete(UUID roleId) {
+        roleRepository.getById(roleId);
     }
 
     @Override
-    public void delete(UUID id) {
-        roleRepository.deleteById(id);
+    public RoleDto toDto(Role role) {
+        return RoleDto.builder()
+                .id(role.getId())
+                .roleName(role.getName())
+                .build();
     }
 }

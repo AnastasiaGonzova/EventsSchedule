@@ -10,9 +10,11 @@ public interface EmployeeService {
 
     Employee getAndInitialize(UUID id);
 
-    Employee create(Employee employeeJson);
-
     Employee update(UUID id, Employee employeeJson);
 
     void delete(UUID id);
+
+    Employee assignRole(UUID employeeId, UUID roleId);
+
+    Employee removeRole(UUID employeeId, UUID roleId);
 }

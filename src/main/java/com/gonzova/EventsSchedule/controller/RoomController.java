@@ -7,6 +7,7 @@ import com.gonzova.EventsSchedule.domain.mapper.RoomMapper;
 import com.gonzova.EventsSchedule.service.RoomService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ public class RoomController {
     private RoomMapper roomMapper;
 
     @GetMapping("/rooms/{roomId}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public RoomDto get(@PathVariable(name="roomId") UUID id){
         return Optional.of(id)
                 .map(roomService::getAndInitialize)
@@ -33,6 +35,7 @@ public class RoomController {
     }
 
     @PostMapping("/offices/{officeId}/rooms")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public RoomDto create(@PathVariable(name="officeId") UUID officeId, @Valid @RequestBody RoomCreateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromCreateDto)
@@ -42,6 +45,7 @@ public class RoomController {
     }
 
     @PatchMapping("/rooms/{roomId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public RoomDto update(@PathVariable(name="roomId") UUID roomId, @Valid @RequestBody RoomUpdateDto roomJson){
         return Optional.ofNullable(roomJson)
                 .map(roomMapper::fromUpdateDto)
@@ -51,6 +55,7 @@ public class RoomController {
     }
 
     @DeleteMapping("/offices/{officeId}/rooms/{roomId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@PathVariable(name="officeId") UUID officeId, @PathVariable(name="roomId") UUID roomId){
         roomService.delete(officeId, roomId);
     }

@@ -16,15 +16,22 @@ public interface EmployeeMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "plannerEvent", ignore = true)
+    @Mapping(target = "guestEvent", ignore = true)
     Employee fromCreateDto(EmployeeCreateDto userDto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "plannerEvent", ignore = true)
+    @Mapping(target = "guestEvent", ignore = true)
     Employee fromUpdateDto(EmployeeUpdateDto userDto);
 
 
     EmployeeDto toDto (Employee employee);
 
+    @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "plannerEvent", ignore = true)
+    @Mapping(target = "guestEvent", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     Employee merge(@MappingTarget Employee target, Employee source);
 }

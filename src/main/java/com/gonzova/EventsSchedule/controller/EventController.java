@@ -7,6 +7,7 @@ import com.gonzova.EventsSchedule.domain.mapper.EventMapper;
 import com.gonzova.EventsSchedule.service.EventService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ public class EventController {
     private EventMapper eventMapper;
 
     @GetMapping("/events/{eventId}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public EventDto get(@PathVariable(name="eventId") UUID eventId){
         return Optional.of(eventId)
                 .map(eventService::getAndInitialize)
@@ -33,6 +35,7 @@ public class EventController {
     }
 
     @PostMapping("/employees/{employeeId}/events")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public EventDto create(@PathVariable(name="employeeId") UUID employeeId, @Valid @RequestBody EventCreateDto eventJson){
         return Optional.ofNullable(eventJson)
                 .map(eventMapper::fromCreateDto)
@@ -42,6 +45,7 @@ public class EventController {
     }
 
     @PatchMapping("/events/{eventId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasPermission(#id, 'Event', 'UPDATE')")
     public EventDto update(@PathVariable(name="eventId") UUID id, @Valid @RequestBody EventUpdateDto eventJson){
         return Optional.ofNullable(eventJson)
                 .map(eventMapper::fromUpdateDto)
@@ -51,11 +55,13 @@ public class EventController {
     }
 
     @DeleteMapping("/employees/{employeeId}/events/{eventId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasPermission(#eventId, 'Event', 'DELETE')")
     public void delete(@PathVariable(name="employeeId") UUID employeeId, @PathVariable(name="eventId") UUID eventId){
         eventService.delete(employeeId, eventId);
     }
 
     @PostMapping("/events/{eventId}/rooms/{roomId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasPermission(#eventId, 'Event', 'WRITE')")
     public EventDto assignRoom(@PathVariable(name="eventId") UUID eventId, @PathVariable(name="roomId") UUID roomId){
         return Optional.of(eventId)
                 .map(current->eventService.assignRoom(roomId, current))
@@ -64,6 +70,7 @@ public class EventController {
     }
 
     @DeleteMapping("/events/{eventId}/rooms/{roomId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasPermission(#eventId, 'Event', 'DELETE')")
     public EventDto removeRoom(@PathVariable(name="eventId") UUID eventId, @PathVariable(name="roomId") UUID roomId){
         return Optional.of(eventId)
                 .map(current->eventService.removeRoom(roomId, current))
